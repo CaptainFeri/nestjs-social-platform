@@ -1,5 +1,6 @@
 import { ConnectionOptions } from "typeorm";
 import { ArticleEntity } from "./article/article.entity";
+import { FollowEntity } from "./profile/entity/follow.entity";
 import { TagEntity } from "./tags/tags.entity";
 import { UserEntity } from "./user/user.entity";
 
@@ -10,7 +11,7 @@ const config : ConnectionOptions = {
     username: 'postgres',
     password: 'admin',
     database:"my-server",
-    entities: [TagEntity,UserEntity,ArticleEntity],
+    entities: [TagEntity,UserEntity,ArticleEntity,FollowEntity],
     synchronize: true,
 };
 
