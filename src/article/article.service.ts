@@ -10,6 +10,7 @@ import { HttpException } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common';
 import { UpdateArticleDto } from './dto/updateArticle.dto';
 import { ArticlesResponseInterface } from './types/articlesResponse.interface';
+import { FollowEntity } from 'src/profile/entity/follow.entity';
 
 @Injectable()
 export class ArticleService {
@@ -19,6 +20,9 @@ export class ArticleService {
 
         @InjectRepository(UserEntity)
         private readonly userRepository: Repository<UserEntity>,
+
+        @InjectRepository(FollowEntity)
+        private readonly followRepository: Repository<FollowEntity>,
     ) { }
 
     async findAll(query: any): Promise<ArticlesResponseInterface> {
@@ -74,6 +78,15 @@ export class ArticleService {
             return { ...article, favorited };
         })
         return { articles: articleWithFavorited, articlesCount };
+    }
+
+    async getFeed(currentUserId: number, query: any): Promise<ArticlesResponseInterface> {
+        const follows = await this.followRepository.find({
+            followerId: currentUserId,
+        });
+        if(follows.length === 0) {
+            return  {articles: [], articlesCount: 0};
+        }
     }
 
     async updateArticle(slug: string, currentUser: UserEntity, updateArticleDto: UpdateArticleDto): Promise<ArticleEntity> {
