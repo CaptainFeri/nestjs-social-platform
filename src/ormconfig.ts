@@ -11,7 +11,8 @@ const config : ConnectionOptions = {
     username: 'postgres',
     password: 'admin',
     database:"my-server",
-    entities: [TagEntity,UserEntity,ArticleEntity,FollowEntity],
+    // entities: [TagEntity,UserEntity,ArticleEntity,FollowEntity],
+    entities: ["dist/**/*.entity{.ts,.js}"],
     synchronize: true,
 };
 

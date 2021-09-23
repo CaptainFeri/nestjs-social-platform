@@ -19,9 +19,13 @@ export class ProfileService {
         const user = await this.userRepository.findOne({
             username : profileUsername,
         });
-
+        
         if(!user) {
             throw new HttpException('Profile does not exist',HttpStatus.NOT_FOUND);
+        }
+        
+        if(user.id === currentUserId) {
+            return {...user,following: true };
         }
 
         const follow = await this.followRepository.findOne({

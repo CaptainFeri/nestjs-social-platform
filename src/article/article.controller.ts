@@ -14,13 +14,19 @@ import { Put } from '@nestjs/common';
 import { UpdateArticleDto } from './dto/updateArticle.dto';
 import { Query } from '@nestjs/common';
 import { ArticlesResponseInterface } from './types/articlesResponse.interface';
-import { User } from 'src/user/decorators/user.decorator';
+import { User } from '../user/decorators/user.decorator';
 
 @Controller('articles')
 export class ArticleController {
     constructor(
         private readonly articleService: ArticleService,
     ) {}
+
+    @Get('me')
+    @UseGuards(AuthGuard)
+    async getCurrentUserArticles(@User()user: UserEntity): Promise<ArticlesResponseInterface>{
+        return await this.articleService.getCurrentUserArticles(user.id);
+    }
 
     @Get()
     async findAll(@Query() query:any): Promise<ArticlesResponseInterface> {

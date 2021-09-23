@@ -1,5 +1,6 @@
 
-import { BeforeUpdate, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { TagEntity } from "src/tags/tags.entity";
+import { BeforeUpdate, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from '../user/user.entity';
 
 
@@ -32,8 +33,9 @@ export class ArticleEntity {
     })
     updatedAt: Date;
 
-    @Column('simple-array')
-    tagList: string[];
+    @ManyToMany(() => TagEntity)
+    @JoinTable()
+    tags: TagEntity[];
 
     @Column({
         default: 0

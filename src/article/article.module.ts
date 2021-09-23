@@ -4,10 +4,12 @@ import { AuthGuard } from '../user/Guards/auth.guard';
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
 import { ArticleEntity } from './article.entity';
-import { UserEntity } from 'src/user/user.entity';
+import { UserEntity } from '../user/user.entity';
+import { FollowEntity } from '../profile/entity/follow.entity';
+import { TagEntity } from '../tags/tags.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ArticleEntity,UserEntity])],
+  imports: [TypeOrmModule.forFeature([ArticleEntity,UserEntity,FollowEntity,TagEntity])],
   controllers: [ArticleController],
   providers: [ArticleService,AuthGuard]
 })

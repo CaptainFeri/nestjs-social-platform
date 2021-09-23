@@ -9,6 +9,7 @@ import { AuthMiddleware } from './user/middlewares/auth.middleware';
 import { UserModule } from './user/user.module';
 import { ArticleModule } from './article/article.module';
 import { ProfileModule } from './profile/profile.module';
+import { getConnectionOptions } from 'typeorm';
 
 @Module({
   imports: [TypeOrmModule.forRoot(ormconfig),TagsModule, UserModule, ArticleModule, ProfileModule],
@@ -16,7 +17,7 @@ import { ProfileModule } from './profile/profile.module';
   providers: [AppService],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer){
+  configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes({
       path: '*',
       method: RequestMethod.ALL,

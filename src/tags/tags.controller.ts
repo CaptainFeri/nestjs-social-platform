@@ -1,5 +1,4 @@
 import { Get } from '@nestjs/common';
-import { Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { TagEntity } from './tags.entity';
 import { TagsService } from './tags.service';
