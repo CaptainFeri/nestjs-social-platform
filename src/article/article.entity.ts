@@ -1,52 +1,58 @@
-
-import { TagEntity } from "src/tags/tags.entity";
-import { BeforeUpdate, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { TagEntity } from '../tags/tags.entity';
+import {
+  BeforeUpdate,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserEntity } from '../user/user.entity';
 
-
-@Entity({name: 'articles'})
+@Entity({ name: 'articles' })
 export class ArticleEntity {
-    @PrimaryGeneratedColumn()
-    id:number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    slug: string;
-    
-    @Column()
-    title: string;
+  @Column()
+  slug: string;
 
-    @Column()
-    description: string;
+  @Column()
+  title: string;
 
-    @Column()
-    body: string;
+  @Column()
+  description: string;
 
-    @Column({
-        type: 'timestamp',
-        default: new Date()
-    })
-    createdAt: Date;
+  @Column()
+  body: string;
 
-    @Column({
-        type: 'timestamp',
-        default: new Date()
-    })
-    updatedAt: Date;
+  @Column({
+    type: 'timestamp',
+    default: new Date(),
+  })
+  createdAt: Date;
 
-    @ManyToMany(() => TagEntity)
-    @JoinTable()
-    tags: TagEntity[];
+  @Column({
+    type: 'timestamp',
+    default: new Date(),
+  })
+  updatedAt: Date;
 
-    @Column({
-        default: 0
-    })
-    favoritesCount : number;
+  @ManyToMany(() => TagEntity, (tag) => tag.id, { eager: true })
+  @JoinTable()
+  tags: TagEntity[];
 
-    @BeforeUpdate()
-    updateTimestamp() {
-        this.updatedAt = new Date();
-    }
+  @Column({
+    default: 0,
+  })
+  favoritesCount: number;
 
-    @ManyToOne(()=> UserEntity,(user) => user.articles, { eager: true })
-    author: UserEntity;
+  @BeforeUpdate()
+  updateTimestamp() {
+    this.updatedAt = new Date();
+  }
+
+  @ManyToOne(() => UserEntity, (user) => user.articles, { eager: true })
+  author: UserEntity;
 }

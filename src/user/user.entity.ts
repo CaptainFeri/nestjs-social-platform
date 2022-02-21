@@ -1,47 +1,54 @@
-import { BeforeInsert, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { hash } from 'bcrypt';
-import { ArticleEntity } from "../article/article.entity";
+import { ArticleEntity } from '../article/article.entity';
 
-@Entity({name: 'users'})
+@Entity({ name: 'users' })
 export class UserEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    username: string;
+  @Column()
+  username: string;
 
-    @Column()
-    email: string;
+  @Column()
+  email: string;
 
-    @Column({
-        type: 'text',
-        default:"09106299465",
-        name:"mobile"
-    })
-    mobile: string;
+  @Column({
+    type: 'text',
+    default: '09106299465',
+    name: 'mobile',
+  })
+  mobile: string;
 
-    @Column({ default: ''})
-    bio: string;
+  @Column({ default: '' })
+  bio: string;
 
-    @Column({
-        type:'text',
-        default: ''
-    })
-    image: string;
+  @Column({
+    type: 'text',
+    default: '',
+  })
+  image: string;
 
-    @Column({ select : false })
-    password: string;
+  @Column({ select: false })
+  password: string;
 
-    @BeforeInsert()
-    async hashPassword() {
-        this.password = await hash(this.password,10);
-    }
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await hash(this.password, 10);
+  }
 
-    @OneToMany(() => ArticleEntity, (article) => article.author)
-    articles: ArticleEntity[];
+  @OneToMany(() => ArticleEntity, (article) => article.author)
+  articles: ArticleEntity[];
 
-    @ManyToMany(()=> ArticleEntity)
-    @JoinTable()
-    favorites: ArticleEntity[];
-    
+  @ManyToMany(() => ArticleEntity)
+  @JoinTable()
+  favorites: ArticleEntity[];
 }

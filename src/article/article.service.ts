@@ -209,12 +209,34 @@ export class ArticleService {
     createArticleDto: CreateArticleDto,
   ): Promise<ArticleEntity> {
     const article = new ArticleEntity();
-    const tags = (await this.tagRepository.find()).filter((tag)=>tag.name);
-    const selected_tags: TagEntity[] = [];
-    const un_selected_tags: TagEntity[] = [];
-    const dtoTags = createArticleDto.tags;
-    
-    article.tags = selected_tags;
+    const sistemTagsName = (await this.tagRepository.find()).map(
+      (el) => el.name,
+    );
+    const sistemTags = await this.tagRepository.find();
+    const newTags = [];
+    const articleTags = [];
+
+    createArticleDto.tags.forEach((tagName) => {
+      if (!sistemTagsName.includes(tagName)) {
+        const newTag = new TagEntity();
+        newTag.name = tagName;
+        newTags.push(newTag);
+        articleTags.push(newTag);
+      } else {
+        sistemTags.forEach((el) => {
+          if (tagName === el.name) {
+            articleTags.push(el);
+          }
+        });
+      }
+    });
+    await this.tagRepository.save(newTags);
+    // const tagsName = (await this.tagRepository.find()).forEach(tag => {
+    //   if(createArticleDto.tags.includes(tag.name)) {
+    //     article.tags.push(tag);
+    //   }
+    // });
+    article.tags = articleTags;
     article.title = createArticleDto.title;
     article.body = createArticleDto.body;
     article.description = createArticleDto.description;

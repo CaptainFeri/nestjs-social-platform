@@ -9,10 +9,15 @@ import { AuthMiddleware } from './user/middlewares/auth.middleware';
 import { UserModule } from './user/user.module';
 import { ArticleModule } from './article/article.module';
 import { ProfileModule } from './profile/profile.module';
-import { getConnectionOptions } from 'typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(ormconfig),TagsModule, UserModule, ArticleModule, ProfileModule],
+  imports: [
+    TypeOrmModule.forRoot(ormconfig),
+    TagsModule,
+    UserModule,
+    ArticleModule,
+    ProfileModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
